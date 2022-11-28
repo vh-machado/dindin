@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.js": "/dindin/static/js/main.299f3353.js",
+    "static/js/787.7b2a24c2.chunk.js": "/dindin/static/js/787.7b2a24c2.chunk.js",
+    "static/media/netflix-bg.png": "/dindin/static/media/netflix-bg.247f90de1d29e4740369.png",
+    "static/media/disneyplus-bg.jpg": "/dindin/static/media/disneyplus-bg.283ba05188623be7eeb5.jpg",
+    "static/media/cartao.jpg": "/dindin/static/media/cartao.349e0f5ecc1ec24b62f7.jpg",
+    "static/media/steam.png": "/dindin/static/media/steam.20a458b98a0d9d8a499c.png",
+    "static/media/nintendo.png": "/dindin/static/media/nintendo.b5efb0c643ebfc759faf.png",
+    "static/media/disneyplus-white.png": "/dindin/static/media/disneyplus-white.fcc7141bc36df27f3ea5.png",
+    "static/media/lol.png": "/dindin/static/media/lol.c9a3d9df90aedeeff404.png",
+    "static/media/disneyplus.png": "/dindin/static/media/disneyplus.12452900ee7fc1ed5f4b.png",
+    "static/media/xbox.png": "/dindin/static/media/xbox.77204df27eda98765305.png",
+    "static/media/netflix.png": "/dindin/static/media/netflix.774e8c1632ac9433608b.png",
+    "static/media/spotify.png": "/dindin/static/media/spotify.a94cfde48ccb3bf98b15.png",
+    "static/media/uber.png": "/dindin/static/media/uber.cb90ca50f08883d9ba7e.png",
+    "static/media/saldo.svg": "/dindin/static/media/saldo.8686b111dce1379b48b70ba15362fbb6.svg",
+    "static/media/fundologin.webp": "/dindin/static/media/fundologin.9bf224234b527bf3d846.webp",
+    "static/media/logomarca-visa.svg": "/dindin/static/media/logomarca-visa.ed6f2d07246c27f98bde891bcaa26e47.svg",
+    "static/media/logomarca-dindin.svg": "/dindin/static/media/logomarca-dindin.8f4cd6c02a96d91f0f8c38ada061e32e.svg",
+    "static/media/giftcardheader.svg": "/dindin/static/media/giftcardheader.51c113debd59c5b36318167cbb545da9.svg",
+    "index.html": "/dindin/index.html",
+    "static/media/giftcardfooter.svg": "/dindin/static/media/giftcardfooter.3644b31acf4821358318babd0bbf1b9c.svg",
+    "main.299f3353.js.map": "/dindin/static/js/main.299f3353.js.map",
+    "787.7b2a24c2.chunk.js.map": "/dindin/static/js/787.7b2a24c2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.299f3353.js"
+  ]
+}
