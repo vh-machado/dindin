@@ -4,17 +4,16 @@ import React from 'react';
 import fundoCartao from '../../../assets/imagens/fundos/cartao.jpg';
 import logoDindin from '../../../assets/imagens/logomarca-dindin.svg';
 import logoVisa from '../../../assets/imagens/logomarca-visa.svg';
-
-import users from '../../../mocks/users';
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
 
 export default function CartaoCredito() {
-  const { numero, validade } = users[0].cartaoCredito;
+  const { cartaoCredito } = useUsuarioLogado();
 
   return (
     <Box
-      minW='350px'
+      minW="350px"
       bgImg={fundoCartao}
-      bgPosition={"right"}
+      bgPosition={'right'}
       bgSize="cover"
       bgRepeat="no-repeat"
       m="12px"
@@ -34,14 +33,20 @@ export default function CartaoCredito() {
         <Image src={logoVisa} w="40px" />
       </Flex>
 
-      <Text fontSize={'md'} fontWeight={'semibold'} letterSpacing="2px" mb="10px" mt="30px">
-        {numero}
+      <Text
+        fontSize={'md'}
+        fontWeight={'semibold'}
+        letterSpacing="2px"
+        mb="10px"
+        mt="30px"
+      >
+        {cartaoCredito?.numero}
       </Text>
       <Text fontSize={'10px'} fontWeight={'thin'}>
         Validade
       </Text>
       <Text fontSize={'10px'} fontWeight={'thin'}>
-        {validade}
+        {cartaoCredito?.validade}
       </Text>
     </Box>
   );

@@ -2,8 +2,12 @@ import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 
 import fundoSaldo from '../../../assets/imagens/fundos/saldo.svg';
+import formataValor from '../../../servicos/formataValor';
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
 
 export default function SaldoTransferencia() {
+  const { saldo } = useUsuarioLogado();
+
   return (
     <Box
       borderRadius="16px"
@@ -18,7 +22,7 @@ export default function SaldoTransferencia() {
         Saldo
       </Text>
       <Text pb="20px" fontSize={'xl'} fontWeight={'500'} letterSpacing="2px">
-        R$ 1.212,00
+        {formataValor(saldo)}
       </Text>
     </Box>
   );

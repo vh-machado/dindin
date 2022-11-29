@@ -5,11 +5,17 @@ import { useNavigate } from 'react-router-dom';
 
 import cores from '../../../assets/cores';
 import SaldoTransferencia from './SaldoTransferencia';
+import formataMes from '../../../servicos/formataMes';
+import users from '../../../mocks/users';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../servicos/userSlice';
+import formataValor from '../../../servicos/formataValor';
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
 
 function InfoTransferencia({ nome, valor }) {
   return (
     <Box bg={cores.periwinkleCrayola} p="16px" borderRadius="16px" my="10px">
-      {valor == 0 ? (
+      {valor === 0 ? (
         <Flex>
           <Icon
             icon={'material-symbols:info-rounded'}
@@ -52,7 +58,7 @@ function InfoTransferencia({ nome, valor }) {
               color={cores.liberty}
               letterSpacing="1px"
             >
-              {valor}
+              {formataValor(valor)}
             </Text>
           </HStack>
         </>
@@ -61,9 +67,30 @@ function InfoTransferencia({ nome, valor }) {
   );
 }
 
-function BotoesConfirmacao({ dadosTransferencia }) {
-  let navigate = useNavigate();
-  const { valor } = dadosTransferencia;
+function BotoesConfirmacao({ nome, valor }) {
+  const navigate = useNavigate();
+  const usuarioLogado = useUsuarioLogado();
+
+  function finalizarTransferencia() {
+    const timeElapsed = Date.now();
+    const hoje = new Date(timeElapsed);
+
+    const transferencia = {
+      tipo: 'enviado',
+      envolvido: nome,
+      valor,
+      data: hoje.getDate() + ' ' + formataMes(hoje.getMonth() + 1),
+    };
+
+    // Verifica saldo
+    if (usuarioLogado.saldo >= valor) {
+      usuarioLogado.saldo -= valor;
+      usuarioLogado?.extrato.push(transferencia);
+      navigate('/dashboard/inicio');
+    } else {
+      alert('Saldo insuficiente!');
+    }
+  }
 
   return (
     <Flex justify={'space-between'} mt="16px">
@@ -81,7 +108,7 @@ function BotoesConfirmacao({ dadosTransferencia }) {
         _active={{
           bg: cores.kobe,
         }}
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/dashboard/inicio')}
       >
         Cancelar
       </Button>
@@ -100,8 +127,8 @@ function BotoesConfirmacao({ dadosTransferencia }) {
         _active={{
           bg: cores.bottleGreen,
         }}
-        isDisabled={valor == 0}
-        onClick={() => navigate('/')}
+        isDisabled={valor === 0}
+        onClick={() => finalizarTransferencia()}
       >
         Confirmar
       </Button>
@@ -111,7 +138,6 @@ function BotoesConfirmacao({ dadosTransferencia }) {
 
 export default function ResumoTransferencia({
   dadosTransferencia,
-  setDadosTransferencia,
 }) {
   const {
     destino: { nome },
@@ -143,7 +169,7 @@ export default function ResumoTransferencia({
 
         <InfoTransferencia {...{ nome, valor }} />
 
-        <BotoesConfirmacao {...{ dadosTransferencia }} />
+        <BotoesConfirmacao {...{ nome, valor }} />
       </Box>
     </Flex>
   );

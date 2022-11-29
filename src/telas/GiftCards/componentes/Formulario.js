@@ -49,6 +49,7 @@ function Formulario({
           placeholder="0,00"
           {...register('valor', {
             required: 'Campo obrigatório',
+            valueAsNumber: true,
             validate: input => input > 0 || 'Valor deve ser maior que zero',
           })}
         />

@@ -4,8 +4,12 @@ import { Icon } from '@iconify/react';
 
 import cores from '../../../assets/cores';
 import fundoSaldo from '../../../assets/imagens/fundos/saldo.svg';
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
+import formataValor from '../../../servicos/formataValor';
 
 export default function Saldo() {
+  const { saldo } = useUsuarioLogado();
+
   return (
     <Box
       flex="1"
@@ -22,7 +26,7 @@ export default function Saldo() {
         Saldo
       </Text>
       <Text pb="20px" fontSize={'xl'} fontWeight={'500'} letterSpacing="2px">
-        R$ 1.212,00
+        {formataValor(saldo)}
       </Text>
       <Flex justifyContent="flex-end">
         <Button

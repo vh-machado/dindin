@@ -11,9 +11,13 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+
+import { login, logout, selectUser } from '../../../servicos/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import users from '../../../mocks/users';
 
 function Formulario() {
+  const dispatch = useDispatch();
   let navigate = useNavigate();
 
   const {
@@ -36,9 +40,14 @@ function Formulario() {
         resolve();
 
         // Verifica se existe usuário cadastrado
-        if (verificaUsuario({ ...values })) {
+        const buscaUsuario = verificaUsuario({ ...values });
+        if (buscaUsuario) {
+          // Processo de login
+          console.log('logando');
+          const { cpf, nome } = buscaUsuario;
+          dispatch(login({ ...values, cpf, nome }));
           // Navegação para o Início
-          navigate('/inicio');
+          navigate('/dashboard/inicio');
         }
       }, 3000);
     });
@@ -118,7 +127,7 @@ function Formulario() {
           Entrar
         </Button>
       </form>
-      
+
       <Text>Já possui conta?</Text>
 
       <Button

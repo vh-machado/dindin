@@ -11,16 +11,19 @@ import { useForm } from 'react-hook-form';
 import cores from '../../../assets/cores';
 import users from '../../../mocks/users';
 
+
 function Formulario({ setDadosTransferencia }) {
-  const format = val => `R$` + val;
+  //const [priceState, setPriceState] = useState('0,00');
+
+  const format = val => `$` + val;
   const parse = val => val.replace(/^\$/, '');
 
   const {
     handleSubmit,
     register,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm();
+
 
   const verificaConta = (agencia, conta) => {
     return users.find(user => user.agencia === agencia && user.conta === conta);
@@ -40,6 +43,8 @@ function Formulario({ setDadosTransferencia }) {
           // Exibe conta encontrada
           const { nome } = contaBuscada;
           setDadosTransferencia({ destino: { agencia, conta, nome }, valor });
+        } else {
+          alert("Conta não encontrada!")
         }
       }, 3000);
     });
@@ -85,14 +90,35 @@ function Formulario({ setDadosTransferencia }) {
       </FormControl>
 
       <FormControl variant="floating" isInvalid={errors.valor} w={'25vw'}>
+        {/*
         <Input
           id="valor"
-          placeholder="0,00"
+          //type={"number"}
+          placeholder={"R$ 0,00"}
+          value={format(priceState)}
           {...register('valor', {
+            required: 'Campo obrigatório',
+            validate: input => input > 0 || 'Valor deve ser maior que zero',
+            onChange: e => {
+              console.log(e.target.value)
+              setPriceState(e.target.value)
+            }
+          })}
+        />
+        */}
+        
+        <Input
+          id="valor"
+          //type={"number"}
+          placeholder={"0,00"}
+          {...register('valor', {
+            valueAsNumber: true,
             required: 'Campo obrigatório',
             validate: input => input > 0 || 'Valor deve ser maior que zero',
           })}
         />
+        
+        
         <FormLabel htmlFor="valor">Valor</FormLabel>
 
         <FormErrorMessage>

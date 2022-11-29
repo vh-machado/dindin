@@ -4,11 +4,10 @@ import React from 'react';
 import fundoCartao from '../../../assets/imagens/fundos/cartao.jpg';
 import logoDindin from '../../../assets/imagens/logomarca-dindin.svg';
 import logoVisa from '../../../assets/imagens/logomarca-visa.svg';
-
-import users from '../../../mocks/users';
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
 
 export default function CartaoCredito() {
-  const { numero, validade } = users[0].cartaoCredito;
+  const {cartaoCredito} = useUsuarioLogado();
 
   return (
     <Box
@@ -35,13 +34,13 @@ export default function CartaoCredito() {
       </Flex>
 
       <Text fontSize={'md'} fontWeight={'semibold'} letterSpacing="2px" mb="10px" mt="30px">
-        {numero}
+        {cartaoCredito?.numero}
       </Text>
       <Text fontSize={'10px'} fontWeight={'thin'}>
         Validade
       </Text>
       <Text fontSize={'10px'} fontWeight={'thin'}>
-        {validade}
+        {cartaoCredito?.validade}
       </Text>
     </Box>
   );

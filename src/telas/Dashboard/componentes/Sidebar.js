@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Flex, Text, Box } from '@chakra-ui/react';
+import { Button, Flex, Text, Box,Image } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import logo from '../../../assets/imagens/componentes/logo.svg'
+
 const botoesServicos = [
   {
-    pagina: '/',
+    pagina: '/dashboard/inicio',
     icone: <Icon icon="akar-icons:home-alt1" width={'24px'} />,
     texto: 'Início',
   },
   {
-    pagina: '/transferencia',
+    pagina: '/dashboard/transferencia',
     icone: <Icon icon="fa-regular:paper-plane" width={'24px'} />,
     texto: 'Transferência',
   },
   {
-    pagina: '/extrato',
+    pagina: '/dashboard/extrato',
     icone: <Icon icon="uil:bill" width={'24px'} />,
     texto: 'Extrato',
   },
   {
-    pagina: '/giftcards',
+    pagina: '/dashboard/giftcards',
     icone: <Icon icon="eva:gift-outline" width={'24px'} />,
     texto: 'Gift Cards',
   },
@@ -28,12 +30,12 @@ const botoesServicos = [
 
 const botoesConfiguracoes = [
   {
-    pagina: '/conta',
+    pagina: '/dashboard/conta',
     icone: <Icon icon="mi:settings" width={'24px'} />,
     texto: 'Conta',
   },
   {
-    pagina: '/sobre',
+    pagina: '/dashboard/sobre',
     icone: <Icon icon="uil:info-circle" width={'24px'} />,
     texto: 'Sobre',
   },
@@ -78,10 +80,11 @@ function Configuracoes({ paginaAtual, setPaginaAtual, navigate }) {
           <Button
             key={pagina}
             variant={paginaAtual === pagina ? 'sidebarAtiva' : 'sidebar'}
+            /*
             onClick={() => {
               navigate(pagina);
               setPaginaAtual(pagina);
-            }}
+            }}*/
           >
             <Flex align="center">
               {icone}
@@ -108,6 +111,7 @@ export default function Sidebar() {
       shadow={"2xl"}
 
     >
+      <Image src={logo} w="140px" ms="16px" my="32px"/>
       <Servicos {...{ paginaAtual, setPaginaAtual, navigate }} />
       <Configuracoes {...{ paginaAtual, setPaginaAtual, navigate }} />
     </Box>

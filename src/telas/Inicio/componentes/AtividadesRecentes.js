@@ -3,11 +3,8 @@ import { Box, Flex, StackDivider, Text, VStack } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
 import cores from '../../../assets/cores';
-import users from '../../../mocks/users';
-
-function formataValor(valor) {
-  return `R$ ${valor.toFixed(2)}`.replace('.', ',');
-}
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
+import formataValor from '../../../servicos/formataValor';
 
 const tiposOperacoes = {
   recebido: {
@@ -36,7 +33,7 @@ function ItemAtividade({ tipo, envolvido, valor, data }) {
     >
       <Flex direction={'row'} align="center">
         <Flex
-          borderWidth={"1px"}
+          borderWidth={'1px'}
           color={cores.liberty}
           bg={cores.periwinkleCrayola}
           borderRadius="10"
@@ -79,11 +76,18 @@ function ItemAtividade({ tipo, envolvido, valor, data }) {
 }
 
 export default function AtividadesRecentes() {
-  const { extrato } = users[0];
-  const atividadeRecente = extrato.filter((item, index) => index < 3);
+  const { extrato } = useUsuarioLogado();
+  const atividadeRecente = extrato?.filter((item, index) => index < 3);
 
   return (
-    <Box flex="1" m="12px" bg="white" p="24px" borderRadius={"16px"} shadow={'sm'}>
+    <Box
+      flex="1"
+      m="12px"
+      bg="white"
+      p="24px"
+      borderRadius={'16px'}
+      shadow={'sm'}
+    >
       <Text fontSize={'sm'} fontWeight={'semibold'} mb="24px">
         Atividades recentes
       </Text>
@@ -91,7 +95,7 @@ export default function AtividadesRecentes() {
         alignItems={'flex-start'}
         divider={<StackDivider borderColor="gray.200" />}
       >
-        {atividadeRecente.map(function (item, index) {
+        {atividadeRecente?.map(function (item, index) {
           return <ItemAtividade key={index} {...item} />;
         })}
       </VStack>

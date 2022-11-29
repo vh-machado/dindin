@@ -3,11 +3,8 @@ import { Box, Flex, StackDivider, Text, VStack } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 
 import cores from '../../../assets/cores';
-import users from '../../../mocks/users';
-
-function formataValor(valor) {
-  return `R$ ${valor.toFixed(2)}`.replace('.', ',');
-}
+import formataValor from '../../../servicos/formataValor';
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
 
 const tiposOperacoes = {
   recebido: {
@@ -36,7 +33,7 @@ function ItemAtividade({ tipo, envolvido, valor, data }) {
     >
       <Flex direction={'row'} align="center">
         <Flex
-          borderWidth={"1px"}
+          borderWidth={'1px'}
           color={cores.liberty}
           bg={cores.periwinkleCrayola}
           borderRadius="10"
@@ -79,10 +76,17 @@ function ItemAtividade({ tipo, envolvido, valor, data }) {
 }
 
 export default function ListaExtrato() {
-  const { extrato } = users[0];
+  const { extrato } = useUsuarioLogado();
 
   return (
-    <Box flex="1" m="12px" bg="white" p="32px" borderRadius={'16px'} shadow={'sm'}>
+    <Box
+      flex="1"
+      m="12px"
+      bg="white"
+      p="32px"
+      borderRadius={'16px'}
+      shadow={'sm'}
+    >
       <Text fontSize={'md'} fontWeight={'bold'} mb="32px">
         Extrato da Conta
       </Text>
@@ -90,7 +94,7 @@ export default function ListaExtrato() {
         alignItems={'flex-start'}
         divider={<StackDivider borderColor="gray.200" />}
       >
-        {extrato.map(function (item, index) {
+        {extrato?.map(function (item, index) {
           return <ItemAtividade key={index} {...item} />;
         })}
       </VStack>

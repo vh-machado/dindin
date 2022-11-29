@@ -1,10 +1,13 @@
 import React from 'react';
 import { Flex, Text, Box, Button, HStack, Image } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
+import { useNavigate } from 'react-router-dom';
 
 import cores from '../../../assets/cores';
 import SaldoTransferencia from '../../Transferencia/componentes/SaldoTransferencia';
-import { useNavigate } from 'react-router-dom';
+import formataMes from '../../../servicos/formataMes';
+import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
+import formataValor from '../../../servicos/formataValor';
 
 function InfoTransferencia({ logo, valor }) {
   return (
@@ -61,7 +64,7 @@ function InfoTransferencia({ logo, valor }) {
               color={cores.liberty}
               letterSpacing="1px"
             >
-              {valor}
+              {formataValor(valor)}
             </Text>
           </HStack>
         </>
@@ -71,7 +74,29 @@ function InfoTransferencia({ logo, valor }) {
 }
 
 function BotoesConfirmacao({ servico, valor }) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const usuarioLogado = useUsuarioLogado();
+
+  function finalizarCompra() {
+    const timeElapsed = Date.now();
+    const hoje = new Date(timeElapsed);
+
+    const compra = {
+      tipo: 'giftcard',
+      envolvido: servico,
+      valor,
+      data: hoje.getDate() + ' ' + formataMes(hoje.getMonth() + 1),
+    };
+
+    // Verifica saldo
+    if (usuarioLogado.saldo >= valor) {
+      usuarioLogado.saldo -= valor;
+      usuarioLogado?.extrato.push(compra);
+      navigate('/dashboard/inicio');
+    } else {
+      alert('Saldo insuficiente!');
+    }
+  }
 
   return (
     <Flex justify={'space-between'} mt="16px">
@@ -89,7 +114,7 @@ function BotoesConfirmacao({ servico, valor }) {
         _active={{
           bg: cores.kobe,
         }}
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/dashboard/inicio')}
       >
         Cancelar
       </Button>
@@ -109,7 +134,7 @@ function BotoesConfirmacao({ servico, valor }) {
           bg: cores.bottleGreen,
         }}
         isDisabled={servico == null || valor == 0}
-        onClick={() => navigate('/')}
+        onClick={() => finalizarCompra()}
       >
         Confirmar
       </Button>
