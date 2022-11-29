@@ -10,10 +10,9 @@ function Login() {
     <Flex
       h="100vh"
       fontSize="xl"
-      bgImage={fundo}
       bgSize="cover"
     >
-      <Flex bg="white" p="8" m="2" borderRadius="10" align={"center"}>
+      <Flex bg="white" p="16" m="2" borderRadius="10" align={"center"}>
         <Formulario />
       </Flex>
     </Flex>

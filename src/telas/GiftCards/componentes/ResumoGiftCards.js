@@ -76,22 +76,34 @@ function InfoTransferencia({ logo, valor }) {
 function BotoesConfirmacao({ servico, valor }) {
   const navigate = useNavigate();
   const usuarioLogado = useUsuarioLogado();
+  let { cpf, saldo, extrato } = useUsuarioLogado();
 
   function finalizarCompra() {
     const timeElapsed = Date.now();
     const hoje = new Date(timeElapsed);
+    const data = hoje.getDate() + ' ' + formataMes(hoje.getMonth() + 1);
 
     const compra = {
       tipo: 'giftcard',
       envolvido: servico,
       valor,
-      data: hoje.getDate() + ' ' + formataMes(hoje.getMonth() + 1),
+      data,
     };
 
     // Verifica saldo
-    if (usuarioLogado.saldo >= valor) {
-      usuarioLogado.saldo -= valor;
-      usuarioLogado?.extrato.push(compra);
+    if (saldo >= valor) {
+      saldo -= valor;
+      extrato.push(compra);
+
+      const usuarios = JSON.parse(window.sessionStorage.usuariosCadastrados);
+      let buscaUsuario = usuarios.find(usuario => usuario.cpf === cpf);
+      buscaUsuario.saldo = saldo;
+      buscaUsuario.extrato = extrato;
+      window.sessionStorage.setItem(
+        'usuariosCadastrados',
+        JSON.stringify(usuarios)
+      );
+
       navigate('/dashboard/inicio');
     } else {
       alert('Saldo insuficiente!');

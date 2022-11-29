@@ -67,25 +67,64 @@ function InfoTransferencia({ nome, valor }) {
   );
 }
 
-function BotoesConfirmacao({ nome, valor }) {
+function BotoesConfirmacao({ dadosTransferencia }) {
   const navigate = useNavigate();
-  const usuarioLogado = useUsuarioLogado();
+  let { cpf, saldo, extrato } = useUsuarioLogado();
+  const {
+    destino: { nome, agencia, conta },
+    valor,
+  } = dadosTransferencia;
+
+  function enviaTransferencia({ data, nomeOrigem }) {
+    const usuarios = JSON.parse(window.sessionStorage.usuariosCadastrados);
+    let buscaUsuario = usuarios.find(
+      usuario => usuario.agencia === agencia && usuario.conta === conta
+    );
+
+    const transferenciaRecebida = {
+      tipo: 'recebido',
+      envolvido: nomeOrigem,
+      valor,
+      data,
+    };
+
+    buscaUsuario.extrato?.push(transferenciaRecebida);
+    buscaUsuario.saldo += valor;
+
+    window.sessionStorage.setItem(
+      'usuariosCadastrados',
+      JSON.stringify(usuarios)
+    );
+  }
 
   function finalizarTransferencia() {
     const timeElapsed = Date.now();
     const hoje = new Date(timeElapsed);
+    const data = hoje.getDate() + ' ' + formataMes(hoje.getMonth() + 1);
 
-    const transferencia = {
+    const transferenciaEnviada = {
       tipo: 'enviado',
       envolvido: nome,
       valor,
-      data: hoje.getDate() + ' ' + formataMes(hoje.getMonth() + 1),
+      data,
     };
 
     // Verifica saldo
-    if (usuarioLogado.saldo >= valor) {
-      usuarioLogado.saldo -= valor;
-      usuarioLogado?.extrato.push(transferencia);
+    if (saldo >= valor) {
+      saldo -= valor;
+      extrato?.push(transferenciaEnviada);
+
+      const usuarios = JSON.parse(window.sessionStorage.usuariosCadastrados);
+      let buscaUsuario = usuarios.find(usuario => usuario.cpf === cpf);
+      buscaUsuario.saldo = saldo;
+      buscaUsuario.extrato = extrato;
+      window.sessionStorage.setItem(
+        'usuariosCadastrados',
+        JSON.stringify(usuarios)
+      );
+
+      enviaTransferencia({ data, nomeOrigem: buscaUsuario.nome });
+
       navigate('/dashboard/inicio');
     } else {
       alert('Saldo insuficiente!');
@@ -136,9 +175,7 @@ function BotoesConfirmacao({ nome, valor }) {
   );
 }
 
-export default function ResumoTransferencia({
-  dadosTransferencia,
-}) {
+export default function ResumoTransferencia({ dadosTransferencia }) {
   const {
     destino: { nome },
     valor,
@@ -148,13 +185,13 @@ export default function ResumoTransferencia({
     <Flex
       h="fit-content"
       w="40%"
-      bg={"white"}
+      bg={'white'}
       m="24px"
       borderRadius="16px"
       p="24px"
       direction={'column'}
       justify={'flex-start'}
-      shadow={"sm"}
+      shadow={'sm'}
     >
       <SaldoTransferencia />
 
@@ -169,7 +206,7 @@ export default function ResumoTransferencia({
 
         <InfoTransferencia {...{ nome, valor }} />
 
-        <BotoesConfirmacao {...{ nome, valor }} />
+        <BotoesConfirmacao {...{ dadosTransferencia }} />
       </Box>
     </Flex>
   );

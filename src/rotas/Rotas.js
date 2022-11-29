@@ -18,7 +18,9 @@ export default function Rotas() {
         <Route path="inicio" element={<Inicio />} />
         <Route path="transferencia" element={<Transferencia />} />
         <Route path="extrato" element={<Extrato />} />
-        <Route path="giftcards" element={<GiftCards />} />
+        <Route path="giftcards" element={<GiftCards />} >
+          <Route path=":giftcardServico" element={<GiftCards />} />
+        </Route>
       </Route>
       <Route path="cadastro" element={<Cadastro />} />
       <Route path="login" element={<Login />} />

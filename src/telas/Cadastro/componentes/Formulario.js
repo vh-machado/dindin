@@ -9,13 +9,17 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import users from '../../../mocks/users';
+import { useDispatch } from 'react-redux';
+import { login } from '../../../servicos/userSlice';
 
-const caracteresEspeciais = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+const caracteresEspeciais = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 const numeros = /[0-9]/;
 const letras = /[a-z]/i;
 
 function Formulario() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -24,14 +28,55 @@ function Formulario() {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  function cadastrarUsuario(values) {
+    // Verifica se usuário já é cadastrado
+    let usuariosCadastrados = JSON.parse(
+      window.sessionStorage.usuariosCadastrados
+    );
+
+    const usuarioJaCadastrado = usuariosCadastrados.find(
+      buscaUsuario => buscaUsuario.cpf === values.cpf
+    );
+    if (!usuarioJaCadastrado) {
+      const agencia = '1';
+      const conta = String(usuariosCadastrados.length + 1);
+      const { nome, cpf, senha } = values;
+
+      usuariosCadastrados.push({
+        nome,
+        cpf,
+        senha,
+        agencia,
+        conta,
+        saldo: 1000,
+        cartaoCredito: {
+          numero: '0000 0000 0000 0000',
+          validade: '01/26',
+        },
+        extrato: [],
+      });
+      window.sessionStorage.setItem(
+        'usuariosCadastrados',
+        JSON.stringify(usuariosCadastrados)
+      );
+
+      // Login da conta cadastrada
+      dispatch(login({ cpf, nome, conta, agencia }));
+
+      // Navegação para o Início
+      navigate('/dashboard/inicio');
+    } else {
+      alert('Você já possui uma conta!');
+    }
+  }
+
   function onSubmit(values) {
     return new Promise(resolve => {
       setTimeout(() => {
         alert(JSON.stringify(values, null, 2));
         resolve();
 
-        // Navegação para o Início
-        navigate('/inicio');
+        cadastrarUsuario(values);
       }, 3000);
     });
   }

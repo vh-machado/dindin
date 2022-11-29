@@ -3,8 +3,8 @@ const users = [
     nome: 'Victor Silva',
     cpf: '11111111111',
     senha: '12345678',
-    agencia: '1000',
-    conta: '10001000',
+    agencia: '1',
+    conta: '1',
     saldo: 10000,
     cartaoCredito: {
       numero: '0000 0000 0000 0000',
@@ -53,8 +53,8 @@ const users = [
     nome: 'Marcus Loureiro',
     cpf: '00010001001',
     senha: '12345678',
-    agencia: '1000',
-    conta: '10001001',
+    agencia: '1',
+    conta: '2',
     saldo: 3000,
     cartaoCredito: {
       numero: '0000 0000 0000 0000',

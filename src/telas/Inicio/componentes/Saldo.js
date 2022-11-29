@@ -6,8 +6,10 @@ import cores from '../../../assets/cores';
 import fundoSaldo from '../../../assets/imagens/fundos/saldo.svg';
 import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
 import formataValor from '../../../servicos/formataValor';
+import { useNavigate } from 'react-router-dom';
 
 export default function Saldo() {
+  const navigate = useNavigate();
   const { saldo } = useUsuarioLogado();
 
   return (
@@ -42,6 +44,7 @@ export default function Saldo() {
           _hover={{
             bg: 'rgba(100, 88, 174, 0.32)',
           }}
+          onClick={() => navigate("../extrato")}
         >
           <Text>Extrato</Text>
           <Icon icon="eva:arrow-ios-forward-fill" width={'24px'} />

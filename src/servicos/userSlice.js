@@ -3,9 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
-    value: localStorage.getItem('usuarioLogado')
-      ? JSON.parse(localStorage.getItem('usuarioLogado'))
-      : null,
+    value:
+      window.sessionStorage.isMySessionActive &&
+      localStorage.getItem('usuarioLogado')
+        ? JSON.parse(localStorage.getItem('usuarioLogado'))
+        : null,
   },
   reducers: {
     login: (state, action) => {
@@ -14,7 +16,7 @@ export const userSlice = createSlice({
     },
     logout: state => {
       state.value = null;
-      localStorage.clear();
+      localStorage.removeItem('usuarioLogado');
     },
   },
 });

@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Flex, Image, useDisclosure } from '@chakra-ui/react';
+import { useParams } from 'react-router-dom';
 
 import giftcards from '../../../mocks/giftcards';
-import cores from '../../../assets/cores';
 import ModalValor from './ModalValor';
 
 export default function GridGiftCards({ compraGiftCard, setCompraGiftCard }) {
+  let params = useParams();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (params) {
+      let item = giftcards.find(
+        giftcard => giftcard.servico === params.giftcardServico
+      );
+      setCompraGiftCard({ loja: { ...item }, valor: 0 });
+      onOpen();
+    }
+  }, []);
 
   return (
     <Flex
@@ -49,9 +60,7 @@ export default function GridGiftCards({ compraGiftCard, setCompraGiftCard }) {
         })}
       </Flex>
 
-      <ModalValor
-        {...{ isOpen, onClose, compraGiftCard, setCompraGiftCard }}
-      />
+      <ModalValor {...{ isOpen, onClose, compraGiftCard, setCompraGiftCard }} />
     </Flex>
   );
 }

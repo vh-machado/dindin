@@ -27,11 +27,25 @@ function Formulario() {
   } = useForm();
 
   const verificaUsuario = ({ agencia, conta, senha }) => {
-    return users.find(
+    return JSON.parse(window.sessionStorage.usuariosCadastrados).find(
       user =>
         user.agencia === agencia && user.conta === conta && user.senha === senha
     );
   };
+
+  function loginUsuario(values) {
+    // Verifica se existe usuário cadastrado
+    const buscaUsuario = verificaUsuario({ ...values });
+    if (buscaUsuario) {
+      // Processo de login
+      console.log('logando');
+      const { cpf, nome } = buscaUsuario;
+      const { agencia, conta } = values;
+      dispatch(login({ cpf, nome, agencia, conta }));
+      // Navegação para o Início
+      navigate('/dashboard/inicio');
+    }
+  }
 
   function onSubmit(values) {
     return new Promise(resolve => {
@@ -39,16 +53,7 @@ function Formulario() {
         alert(JSON.stringify(values, null, 2));
         resolve();
 
-        // Verifica se existe usuário cadastrado
-        const buscaUsuario = verificaUsuario({ ...values });
-        if (buscaUsuario) {
-          // Processo de login
-          console.log('logando');
-          const { cpf, nome } = buscaUsuario;
-          dispatch(login({ ...values, cpf, nome }));
-          // Navegação para o Início
-          navigate('/dashboard/inicio');
-        }
+        loginUsuario(values);
       }, 3000);
     });
   }
