@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Image, Button, Flex, Text, useDisclosure } from '@chakra-ui/react';
+import React from 'react';
+import { Image, Button, Flex, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import Formulario from './componentes/Formulario';

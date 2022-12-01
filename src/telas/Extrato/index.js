@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 
 import cores from '../../assets/cores';
 import SaldoExtrato from './componentes/SaldoExtrato';

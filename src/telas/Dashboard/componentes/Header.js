@@ -17,7 +17,7 @@ import {
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 
-import { login, logout, selectUser } from '../../../servicos/userSlice';
+import { logout, selectUser } from '../../../servicos/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import cores from '../../../assets/cores';
 import fotoUsuario from '../../../assets/imagens/componentes/userprofile.svg';

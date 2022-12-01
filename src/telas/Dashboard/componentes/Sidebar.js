@@ -80,11 +80,6 @@ function Configuracoes({ paginaAtual, setPaginaAtual, navigate }) {
           <Button
             key={pagina}
             variant={paginaAtual === pagina ? 'sidebarAtiva' : 'sidebar'}
-            /*
-            onClick={() => {
-              navigate(pagina);
-              setPaginaAtual(pagina);
-            }}*/
           >
             <Flex align="center">
               {icone}
