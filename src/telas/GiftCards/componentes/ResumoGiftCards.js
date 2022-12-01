@@ -1,5 +1,13 @@
-import React from 'react';
-import { Flex, Text, Box, Button, HStack, Image } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import {
+  Flex,
+  Text,
+  Box,
+  Button,
+  HStack,
+  Image,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,6 +16,7 @@ import SaldoTransferencia from '../../Transferencia/componentes/SaldoTransferenc
 import formataMes from '../../../servicos/formataMes';
 import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
 import formataValor from '../../../servicos/formataValor';
+import Resposta from '../../Login/componentes/Resposta';
 
 function InfoTransferencia({ logo, valor }) {
   return (
@@ -74,9 +83,32 @@ function InfoTransferencia({ logo, valor }) {
 }
 
 function BotoesConfirmacao({ servico, valor }) {
+  const [resposta, setResposta] = useState('erro');
   const navigate = useNavigate();
-  const usuarioLogado = useUsuarioLogado();
   let { cpf, saldo, extrato } = useUsuarioLogado();
+
+  const {
+    isOpen: isOpenResposta,
+    onOpen: onOpenResposta,
+    onClose: onCloseResposta,
+  } = useDisclosure();
+
+  const conteudoResposta = {
+    sucesso: {
+      header: 'Gift Card adquirido',
+      body: 'O gift card foi comprado com sucesso',
+      colorScheme: 'teal',
+      buttonTitle: 'Continuar',
+      action: () => navigate('/dashboard/inicio'),
+    },
+    erro: {
+      header: 'Saldo insuficiente',
+      body: 'Você não possui saldo para a compra',
+      colorScheme: 'red',
+      buttonTitle: 'Fechar',
+      action: null,
+    },
+  };
 
   function finalizarCompra() {
     const timeElapsed = Date.now();
@@ -104,53 +136,60 @@ function BotoesConfirmacao({ servico, valor }) {
         JSON.stringify(usuarios)
       );
 
-      navigate('/dashboard/inicio');
+      setResposta('sucesso');
+      onOpenResposta();
     } else {
-      alert('Saldo insuficiente!');
+      onOpenResposta();
     }
   }
 
   return (
-    <Flex justify={'space-between'} mt="16px">
-      <Button
-        w="47%"
-        bg={cores.orangeSoda}
-        fontSize="sm"
-        fontWeight="bold"
-        color="white"
-        borderRadius="16px"
-        py="24px"
-        _hover={{
-          bg: cores.vermilion,
-        }}
-        _active={{
-          bg: cores.kobe,
-        }}
-        onClick={() => navigate('/dashboard/inicio')}
-      >
-        Cancelar
-      </Button>
+    <>
+      <Flex justify={'space-between'} mt="16px">
+        <Button
+          w="47%"
+          bg={cores.orangeSoda}
+          fontSize="sm"
+          fontWeight="bold"
+          color="white"
+          borderRadius="16px"
+          py="24px"
+          _hover={{
+            bg: cores.vermilion,
+          }}
+          _active={{
+            bg: cores.kobe,
+          }}
+          onClick={() => navigate('/dashboard/inicio')}
+        >
+          Cancelar
+        </Button>
 
-      <Button
-        w="47%"
-        bg={cores.greenCrayola}
-        fontSize="sm"
-        fontWeight="bold"
-        color="white"
-        borderRadius="16px"
-        py="24px"
-        _hover={{
-          bg: cores.paoloVeroneseGreen,
-        }}
-        _active={{
-          bg: cores.bottleGreen,
-        }}
-        isDisabled={servico == null || valor == 0}
-        onClick={() => finalizarCompra()}
-      >
-        Confirmar
-      </Button>
-    </Flex>
+        <Button
+          w="47%"
+          bg={cores.greenCrayola}
+          fontSize="sm"
+          fontWeight="bold"
+          color="white"
+          borderRadius="16px"
+          py="24px"
+          _hover={{
+            bg: cores.paoloVeroneseGreen,
+          }}
+          _active={{
+            bg: cores.bottleGreen,
+          }}
+          isDisabled={servico == null || valor == 0}
+          onClick={() => finalizarCompra()}
+        >
+          Confirmar
+        </Button>
+      </Flex>
+      
+      <Resposta
+        {...{ isOpenResposta, onCloseResposta, resposta, conteudoResposta }}
+      />
+    </>
   );
 }
 

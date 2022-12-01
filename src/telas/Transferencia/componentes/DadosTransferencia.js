@@ -1,7 +1,8 @@
 import React from 'react';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Image } from '@chakra-ui/react';
 
 import Formulario from './Formulario';
+import header from '../../../assets/imagens/componentes/header-transferencia.png';
 
 export default function DadosTransferencia({
   dadosTransferencia,
@@ -14,10 +15,11 @@ export default function DadosTransferencia({
       borderRadius="16px"
       p="16px"
       direction={'column'}
-      justify="center"
+      justify="flex-start"
       alignContent={'center'}
       wrap="wrap"
     >
+      <Image src={header} m="8px" mb="48px"/>
       <Formulario {...{ dadosTransferencia, setDadosTransferencia }} />
     </Flex>
   );

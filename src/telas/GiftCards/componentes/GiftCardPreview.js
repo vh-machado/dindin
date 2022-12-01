@@ -10,6 +10,7 @@ export default function GiftCardPreview({ background, cardLogo }) {
       w="180px"
       h="280px"
       flexDirection={'column'}
+      justify={'space-between'}
       borderRadius="16px"
       overflow="hidden"
       bgImage={background}
@@ -19,10 +20,6 @@ export default function GiftCardPreview({ background, cardLogo }) {
       ms="-60px"
     >
       <Image src={giftcardHeader} />
-      <Flex h="full" justify={'center'} align="center">
-        <Image src={cardLogo} w="120px" />
-      </Flex>
-
       <Image src={giftcardFooter} />
     </Flex>
   );

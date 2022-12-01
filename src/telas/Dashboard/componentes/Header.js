@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import cores from '../../../assets/cores';
 import fotoUsuario from '../../../assets/imagens/componentes/userprofile.svg';
 
-function PopoverConta() {
+function PopoverConta({conta, agencia}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,33 +43,13 @@ function PopoverConta() {
       </PopoverTrigger>
       <PopoverContent w="150px">
         <PopoverHeader color={cores.liberty} fontWeight="bold" fontSize="xs">
-          Opções
+          Perfil
         </PopoverHeader>
         <PopoverArrow />
-        <PopoverBody p="0px">
-          <VStack spacing={'0px'}>
-            <Button
-              w="100%"
-              variant={'ghost'}
-              color={cores.hanBlue}
-              justifyContent="flex-start"
-              borderRadius={'0px'}
-            >
-              <Text fontSize="xs" fontWeight="medium">
-                Perfil
-              </Text>
-            </Button>
-            <Button
-              w="100%"
-              variant={'ghost'}
-              color={cores.hanBlue}
-              justifyContent="flex-start"
-              borderRadius={'0px'}
-            >
-              <Text fontSize="xs" fontWeight="medium">
-                Configurações
-              </Text>
-            </Button>
+        <PopoverBody p="16px">
+          <VStack alignItems={"start"} spacing={'8px'}>
+            <Text fontSize="xs" fontWeight="medium" color={cores.hanBlue}>Agência<br/>{agencia}</Text>
+            <Text fontSize="xs" fontWeight="medium" color={cores.hanBlue}>Conta<br/>{conta}</Text>
           </VStack>
         </PopoverBody>
         <PopoverFooter p="0px">
@@ -82,7 +62,7 @@ function PopoverConta() {
             onClick={() => {
               console.log('deslogando');
               dispatch(logout());
-              navigate('/login')
+              navigate('/')
             }}
           >
             <Icon icon="material-symbols:logout-rounded" width="20px" />
@@ -116,7 +96,7 @@ export default function Header() {
         {usuario?.nome}
       </Text>
 
-      <PopoverConta />
+      <PopoverConta {...usuario}/>
 
       <Icon icon="fa-regular:bell" width="20px" />
     </Flex>

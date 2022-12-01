@@ -5,11 +5,6 @@ import {
   FormErrorMessage,
   Input,
   Button,
-  NumberInput,
-  NumberInputField,
-  InputLeftAddon,
-  InputGroup,
-  InputLeftElement,
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 
@@ -33,30 +28,44 @@ function Formulario({
   function onSubmit(values) {
     return new Promise(resolve => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
         resolve();
         setCompraGiftCard({ ...compraGiftCard, valor: values.valor });
         onCloseModal();
-      }, 3000);
+      }, 1000);
     });
   }
+
+  const caracteresEspeciaisValor = /[` !@#$%^&*()_+\-=\[\]{};':"\\|,<>\/?~]/;
+
+  // Testes de validação
+  const maiorQueZero = input => input > 0;
+  const possuiCaracteresEspeciaisValor = input =>
+    !caracteresEspeciaisValor.test(input);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl variant="floating" isInvalid={errors.valor}>
         <Input
           id="valor"
-          placeholder="0,00"
+          placeholder="0.00"
           {...register('valor', {
-            required: 'Campo obrigatório',
             valueAsNumber: true,
-            validate: input => input > 0 || 'Valor deve ser maior que zero',
+            required: 'Campo obrigatório',
+            validate: {
+              possuiCaracteresEspeciaisValor,
+              maiorQueZero,
+            },
           })}
         />
         <FormLabel htmlFor="valor">Valor</FormLabel>
 
         <FormErrorMessage>
-          {errors.valor && errors.valor?.message}
+          {errors.valor &&
+            ((errors.valor?.type === 'possuiCaracteresEspeciaisValor' &&
+              'O valor não deve ter caracteres especiais') ||
+              (errors.valor?.type === 'maiorQueZero' &&
+                'Valor deve ser maior que zero') ||
+              errors.valor?.message)}
         </FormErrorMessage>
       </FormControl>
 

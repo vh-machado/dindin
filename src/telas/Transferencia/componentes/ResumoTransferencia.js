@@ -1,16 +1,21 @@
-import React from 'react';
-import { Flex, Text, Box, Button, HStack } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import {
+  Flex,
+  Text,
+  Box,
+  Button,
+  HStack,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 import { useNavigate } from 'react-router-dom';
 
 import cores from '../../../assets/cores';
 import SaldoTransferencia from './SaldoTransferencia';
 import formataMes from '../../../servicos/formataMes';
-import users from '../../../mocks/users';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../../servicos/userSlice';
 import formataValor from '../../../servicos/formataValor';
 import useUsuarioLogado from '../../../hooks/useUsuarioLogado';
+import Resposta from '../../Login/componentes/Resposta';
 
 function InfoTransferencia({ nome, valor }) {
   return (
@@ -68,12 +73,37 @@ function InfoTransferencia({ nome, valor }) {
 }
 
 function BotoesConfirmacao({ dadosTransferencia }) {
+  const [resposta, setResposta] = useState('erro');
   const navigate = useNavigate();
+
   let { cpf, saldo, extrato } = useUsuarioLogado();
   const {
     destino: { nome, agencia, conta },
     valor,
   } = dadosTransferencia;
+
+  const {
+    isOpen: isOpenResposta,
+    onOpen: onOpenResposta,
+    onClose: onCloseResposta,
+  } = useDisclosure();
+
+  const conteudoResposta = {
+    sucesso: {
+      header: 'Transferência concluída',
+      body: 'A quantia foi transferida com sucesso',
+      colorScheme: 'teal',
+      buttonTitle: 'Continuar',
+      action: () => navigate('/dashboard/inicio'),
+    },
+    erro: {
+      header: 'Saldo insuficiente',
+      body: 'Você não possui saldo para a transferência',
+      colorScheme: 'red',
+      buttonTitle: 'Fechar',
+      action: null,
+    },
+  };
 
   function enviaTransferencia({ data, nomeOrigem }) {
     const usuarios = JSON.parse(window.sessionStorage.usuariosCadastrados);
@@ -124,54 +154,57 @@ function BotoesConfirmacao({ dadosTransferencia }) {
       );
 
       enviaTransferencia({ data, nomeOrigem: buscaUsuario.nome });
-
-      navigate('/dashboard/inicio');
+      setResposta('sucesso');
+      onOpenResposta();
     } else {
-      alert('Saldo insuficiente!');
+      onOpenResposta();
     }
   }
 
   return (
-    <Flex justify={'space-between'} mt="16px">
-      <Button
-        w="47%"
-        bg={cores.orangeSoda}
-        fontSize="sm"
-        fontWeight="bold"
-        color="white"
-        borderRadius="16px"
-        py="24px"
-        _hover={{
-          bg: cores.vermilion,
-        }}
-        _active={{
-          bg: cores.kobe,
-        }}
-        onClick={() => navigate('/dashboard/inicio')}
-      >
-        Cancelar
-      </Button>
+    <>
+      <Flex justify={'space-between'} mt="16px">
+        <Button
+          w="47%"
+          bg={cores.orangeSoda}
+          fontSize="sm"
+          fontWeight="bold"
+          color="white"
+          borderRadius="16px"
+          py="24px"
+          _hover={{
+            bg: cores.vermilion,
+          }}
+          _active={{
+            bg: cores.kobe,
+          }}
+          onClick={() => navigate('/dashboard/inicio')}
+        >
+          Cancelar
+        </Button>
 
-      <Button
-        w="47%"
-        bg={cores.greenCrayola}
-        fontSize="sm"
-        fontWeight="bold"
-        color="white"
-        borderRadius="16px"
-        py="24px"
-        _hover={{
-          bg: cores.paoloVeroneseGreen,
-        }}
-        _active={{
-          bg: cores.bottleGreen,
-        }}
-        isDisabled={valor === 0}
-        onClick={() => finalizarTransferencia()}
-      >
-        Confirmar
-      </Button>
-    </Flex>
+        <Button
+          w="47%"
+          bg={cores.greenCrayola}
+          fontSize="sm"
+          fontWeight="bold"
+          color="white"
+          borderRadius="16px"
+          py="24px"
+          _hover={{
+            bg: cores.paoloVeroneseGreen,
+          }}
+          _active={{
+            bg: cores.bottleGreen,
+          }}
+          isDisabled={valor === 0}
+          onClick={() => finalizarTransferencia()}
+        >
+          Confirmar
+        </Button>
+      </Flex>
+      <Resposta {...{ isOpenResposta, onCloseResposta, resposta, conteudoResposta }} />
+    </>
   );
 }
 

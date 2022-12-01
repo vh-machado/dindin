@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Flex, Image, useDisclosure } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 
+import header from '../../../assets/imagens/componentes/header-giftcards.png';
 import giftcards from '../../../mocks/giftcards';
 import ModalValor from './ModalValor';
 
@@ -10,7 +11,7 @@ export default function GridGiftCards({ compraGiftCard, setCompraGiftCard }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    if (params) {
+    if (params.giftcardServico) {
       let item = giftcards.find(
         giftcard => giftcard.servico === params.giftcardServico
       );
@@ -28,6 +29,7 @@ export default function GridGiftCards({ compraGiftCard, setCompraGiftCard }) {
       px="24px"
       direction={'column'}
     >
+      <Image src={header} m="8px" mb="24px"/>
       <Flex
         h="100%"
         direction={'row'}

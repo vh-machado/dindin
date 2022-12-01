@@ -11,9 +11,14 @@ export default function Transferencia() {
   });
 
   return (
-    <Flex grow="1" direction={'row'} alignContent={'flex-start'} alignItems={'stretch'} >
-      <DadosTransferencia {...{dadosTransferencia, setDadosTransferencia}} />
-      <ResumoTransferencia {...{dadosTransferencia, setDadosTransferencia}} />
+    <Flex
+      grow="1"
+      direction={'row'}
+      alignContent={'flex-start'}
+      alignItems={'stretch'}
+    >
+      <DadosTransferencia {...{ dadosTransferencia, setDadosTransferencia }} />
+      <ResumoTransferencia {...{ dadosTransferencia, setDadosTransferencia }} />
     </Flex>
   );
 }
